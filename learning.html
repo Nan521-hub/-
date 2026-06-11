@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>学习中心 - 生物化学学习平台</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .learning-layout {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .sidebar {
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 18px;
+            padding: 1.5rem;
+            height: fit-content;
+            max-height: calc(100vh - 120px);
+            overflow-y: auto;
+        }
+        .sidebar h4 {
+            color: #f1f5f9;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+        .knowledge-list {
+            list-style: none;
+        }
+        .knowledge-list li {
+            padding: 12px 14px;
+            border-radius: 10px;
+            margin-bottom: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: #cbd5e1;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .knowledge-list li:hover {
+            background: rgba(99, 102, 241, 0.08);
+            color: #f1f5f9;
+        }
+        .knowledge-list li.active {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(168, 85, 247, 0.15));
+            color: #f1f5f9;
+            border-left: 3px solid #6366f1;
+            padding-left: 11px;
+        }
+        .knowledge-list li.completed {
+            color: #10b981;
+        }
+        .knowledge-list li.completed::after {
+            content: '✓';
+            color: #10b981;
+            font-weight: 700;
+        }
+        .knowledge-content {
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 18px;
+            padding: 2rem;
+            min-height: 500px;
+        }
+        .knowledge-header {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding-bottom: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .knowledge-header h2 {
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+            color: #f1f5f9;
+        }
+        .knowledge-meta {
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+        .knowledge-body {
+            color: #cbd5e1;
+            line-height: 2;
+            font-size: 1rem;
+        }
+        .knowledge-body h3 {
+            color: #f1f5f9;
+            margin: 1.5rem 0 1rem;
+            font-size: 1.25rem;
+        }
+        .knowledge-body h4 {
+            color: #a855f7;
+            margin: 1.2rem 0 0.8rem;
+            font-size: 1.1rem;
+        }
+        .knowledge-body strong {
+            color: #f59e0b;
+            font-weight: 600;
+        }
+        .knowledge-body ul, .knowledge-body ol {
+            margin: 0.8rem 0 0.8rem 1.5rem;
+        }
+        .knowledge-body li {
+            margin-bottom: 0.5rem;
+        }
+        .action-buttons {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .chapter-selector {
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background: rgba(15, 23, 42, 0.6);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        .chapter-selector select {
+            background: rgba(30, 41, 59, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #f1f5f9;
+            padding: 10px 14px;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            width: 100%;
+            font-family: inherit;
+        }
+        .info-box {
+            background: rgba(99, 102, 241, 0.08);
+            border-left: 4px solid #6366f1;
+            padding: 1rem 1.2rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+        }
+        .warning-box {
+            background: rgba(239, 68, 68, 0.08);
+            border-left: 4px solid #ef4444;
+            padding: 1rem 1.2rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+        }
+        .success-box {
+            background: rgba(16, 185, 129, 0.08);
+            border-left: 4px solid #10b981;
+            padding: 1rem 1.2rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+        }
+        .tips-box {
+            background: rgba(245, 158, 11, 0.08);
+            border-left: 4px solid #f59e0b;
+            padding: 1rem 1.2rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+        }
+        .knowledge-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            font-size: 0.9rem;
+        }
+        .knowledge-table th, .knowledge-table td {
+            padding: 10px 12px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            text-align: left;
+        }
+        .knowledge-table th {
+            background: rgba(99, 102, 241, 0.1);
+            color: #a855f7;
+            font-weight: 600;
+        }
+        .knowledge-table tr:nth-child(even) td {
+            background: rgba(15, 23, 42, 0.4);
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div style="max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; height: 70px;">
+            <div class="logo" onclick="location.href='index.html'">
+                <div class="logo-icon">🧬</div>
+                <div style="font-weight: 700; font-size: 1.2rem;">生化学习平台</div>
+            </div>
+            <div class="nav-links" style="list-style: none; display: flex; gap: 8px;">
+                <a href="index.html">首页</a>
+                <a href="chapters.html">学习中心</a>
+                <a href="quiz.html">练习测试</a>
+                <a href="community.html">社区交流</a>
+                <a href="achievements.html">成就系统</a>
+            </div>
+            <div class="nav-user"></div>
+        </div>
+    </nav>
+
+    <div class="container" style="padding: 2rem;">
+        <div class="learning-layout">
+            <!-- 侧边栏 -->
+            <div class="sidebar">
+                <div class="chapter-selector">
+                    <label style="color: #94a3b8; font-size: 0.85rem; display: block; margin-bottom: 8px;">选择章节</label>
+                    <select id="chapterSelect" onchange="onChapterChange()"></select>
+                </div>
+                <h4 id="chapterTitle">📚 知识点列表</h4>
+                <ul class="knowledge-list" id="knowledgeList"></ul>
+            </div>
+
+            <!-- 主内容 -->
+            <div class="knowledge-content">
+                <div class="knowledge-header">
+                    <h2 id="knowledgeTitle">👋 欢迎进入学习中心</h2>
+                    <p class="knowledge-meta" id="knowledgeMeta">请从左侧选择一个知识点开始学习</p>
+                </div>
+                <div class="knowledge-body" id="knowledgeBody">
+                    <div class="success-box">
+                        <h4>💡 学习提示</h4>
+                        <p>生物化学是一门系统性很强的学科，建议按顺序学习：</p>
+                        <ol>
+                            <li><strong>蛋白质</strong> - 从氨基酸开始，逐步理解蛋白质的结构与功能</li>
+                            <li><strong>核酸</strong> - 学习 DNA、RNA 的结构与作用</li>
+                            <li><strong>酶</strong> - 了解生物催化剂的特性与作用机制</li>
+                            <li><strong>糖代谢</strong> - 掌握糖的分解与合成途径</li>
+                            <li><strong>脂类代谢</strong> - 理解脂肪的代谢与调控</li>
+                        </ol>
+                    </div>
+                    <div class="tips-box">
+                        <h4>📝 学习建议</h4>
+                        <p>每个章节包含多个知识点，建议：</p>
+                        <ul>
+                            <li>认真阅读知识点内容，理解核心概念</li>
+                            <li>学习完成后点击"标记已学习"追踪进度</li>
+                            <li>通过"相关练习"进行巩固练习</li>
+                            <li>结合名词解释、填空题等多种方式强化记忆</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="action-buttons" id="actionButtons" style="display: none;">
+                    <button class="btn btn-primary" onclick="markComplete()" id="completeBtn">✓ 标记已学习</button>
+                    <button class="btn btn-secondary" onclick="goPractice()">📝 相关练习</button>
+                    <button class="btn btn-secondary" onclick="goNext()" id="nextBtn">下一个知识点 →</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/data.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        let currentChapter = null;
+        let currentKnowledgeIndex = 0;
+
+        function initLearning() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const chapterId = urlParams.get('chapterId') || BIOCHEM_DATA.chapters[0].id;
+
+            const select = document.getElementById('chapterSelect');
+            select.innerHTML = BIOCHEM_DATA.chapters.map(ch =>
+                `<option value="${ch.id}" ${ch.id === chapterId ? 'selected' : ''}>${ch.icon} ${ch.title}</option>`
+            ).join('');
+
+            loadChapter(chapterId);
+        }
+
+        function onChapterChange() {
+            const id = document.getElementById('chapterSelect').value;
+            loadChapter(id);
+        }
+
+        function loadChapter(chapterId) {
+            currentChapter = BIOCHEM_DATA.chapters.find(c => c.id === chapterId);
+            if (!currentChapter) return;
+
+            document.getElementById('chapterTitle').innerHTML = `📖 ${currentChapter.title}`;
+            const user = UserSystem.getCurrentUser();
+
+            const listEl = document.getElementById('knowledgeList');
+            listEl.innerHTML = currentChapter.knowledge.map((kn, idx) => {
+                const isCompleted = user?.progress?.[`${currentChapter.id}_${kn.id}`]?.completed;
+                return `<li data-idx="${idx}" onclick="selectKnowledge(${idx})" class="${isCompleted ? 'completed' : ''}">
+                    <span>${idx + 1}. ${kn.title.split(' ').slice(1).join(' ') || kn.title}</span>
+                </li>`;
+            }).join('');
+
+            currentKnowledgeIndex = 0;
+            selectKnowledge(0);
+        }
+
+        function selectKnowledge(idx) {
+            currentKnowledgeIndex = idx;
+            const kn = currentChapter.knowledge[idx];
+            const user = UserSystem.getCurrentUser();
+
+            document.querySelectorAll('.knowledge-list li').forEach((li, i) => {
+                li.classList.toggle('active', i === idx);
+            });
+
+            document.getElementById('knowledgeTitle').textContent = kn.title;
+            document.getElementById('knowledgeBody').innerHTML = kn.content;
+            document.getElementById('knowledgeMeta').textContent = `${currentChapter.title} · 第 ${idx + 1} / ${currentChapter.knowledge.length} 个知识点`;
+
+            const isCompleted = user?.progress?.[`${currentChapter.id}_${kn.id}`]?.completed;
+            document.getElementById('completeBtn').textContent = isCompleted ? '✓ 已学习（点击取消）' : '✓ 标记已学习';
+            document.getElementById('actionButtons').style.display = 'flex';
+
+            // 下一个按钮状态
+            const nextBtn = document.getElementById('nextBtn');
+            if (idx >= currentChapter.knowledge.length - 1) {
+                nextBtn.textContent = '🎉 已是最后一个知识点';
+                nextBtn.disabled = true;
+            } else {
+                nextBtn.textContent = '下一个知识点 →';
+                nextBtn.disabled = false;
+            }
+        }
+
+        function markComplete() {
+            const user = UserSystem.getCurrentUser();
+            if (!user) {
+                showToast('请先登录', 'warning');
+                return;
+            }
+            const kn = currentChapter.knowledge[currentKnowledgeIndex];
+            ProgressTracker.markKnowledgeCompleted(currentChapter.id, kn.id);
+            selectKnowledge(currentKnowledgeIndex);
+            loadChapter(currentChapter.id);
+            showToast('已标记为已学习 +10 XP', 'success');
+        }
+
+        function goPractice() {
+            const chapterNum = parseInt(currentChapter.id.replace('chapter-', ''));
+            location.href = `quiz.html?chapterId=${chapterNum}&type=term`;
+        }
+
+        function goNext() {
+            if (currentKnowledgeIndex < currentChapter.knowledge.length - 1) {
+                selectKnowledge(currentKnowledgeIndex + 1);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        initLearning();
+    </script>
+</body>

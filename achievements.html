@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>成就系统 - 生物化学学习平台</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .achievements-header {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(239, 68, 68, 0.1));
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        .achievements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 1.5rem;
+        }
+        .achievement-card {
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 18px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s;
+            position: relative;
+        }
+        .achievement-card.unlocked {
+            border-color: #f59e0b;
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.08), rgba(239, 68, 68, 0.05));
+            box-shadow: 0 8px 30px rgba(245, 158, 11, 0.1);
+        }
+        .achievement-card.locked {
+            opacity: 0.6;
+        }
+        .achievement-card.unlocked:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(245, 158, 11, 0.2);
+        }
+        .achievement-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+        }
+        .achievement-card.unlocked .achievement-icon {
+            background: linear-gradient(135deg, #f59e0b, #fbbf24);
+            box-shadow: 0 8px 30px rgba(245, 158, 11, 0.4);
+        }
+        .achievement-card.locked .achievement-icon {
+            background: rgba(99, 102, 241, 0.1);
+        }
+        .achievement-card h4 {
+            font-size: 1.15rem;
+            margin-bottom: 8px;
+        }
+        .achievement-card p {
+            color: #94a3b8;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+        .achievement-xp {
+            display: inline-block;
+            margin-top: 1rem;
+            padding: 6px 14px;
+            background: rgba(245, 158, 11, 0.15);
+            color: #f59e0b;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+        .unlock-date {
+            color: #64748b;
+            font-size: 0.8rem;
+            margin-top: 6px;
+        }
+        .achievement-summary {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+        .achievement-summary-item {
+            text-align: center;
+        }
+        .achievement-summary-item .val {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #f59e0b, #ef4444);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .achievement-summary-item .lab {
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div style="max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; height: 70px;">
+            <div class="logo" onclick="location.href='index.html'">
+                <div class="logo-icon">🧬</div>
+                <div style="font-weight: 700; font-size: 1.2rem;">生化学习平台</div>
+            </div>
+            <div class="nav-links" style="list-style: none; display: flex; gap: 8px;">
+                <a href="index.html">首页</a>
+                <a href="chapters.html">学习中心</a>
+                <a href="quiz.html">练习测试</a>
+                <a href="community.html">社区交流</a>
+                <a href="achievements.html">成就系统</a>
+            </div>
+            <div class="nav-user"></div>
+        </div>
+    </nav>
+
+    <div class="container" style="padding: 2rem;">
+        <div class="achievements-header">
+            <h1 style="font-size: 2.2rem; margin-bottom: 0.5rem;">🏆 成就系统</h1>
+            <p style="color: #94a3b8; margin-bottom: 1.5rem;">完成学习目标，解锁专属成就，激励自己不断进步</p>
+            <div class="achievement-summary">
+                <div class="achievement-summary-item">
+                    <div class="val" id="unlockedCount">0</div>
+                    <div class="lab">已解锁</div>
+                </div>
+                <div class="achievement-summary-item">
+                    <div class="val" id="totalCount">0</div>
+                    <div class="lab">总成就</div>
+                </div>
+                <div class="achievement-summary-item">
+                    <div class="val" id="xpCount">0</div>
+                    <div class="lab">获得经验值</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="notLoggedIn" style="display: none; text-align: center; padding: 3rem 2rem;">
+            <div style="font-size: 4rem; margin-bottom: 1.5rem;">🔐</div>
+            <h2 style="margin-bottom: 1rem;">请先登录以查看成就</h2>
+            <p style="color: #94a3b8; margin-bottom: 2rem;">登录后解锁并追踪你的成就进度</p>
+            <button class="btn btn-primary btn-large" onclick="location.href='login.html'">登录</button>
+        </div>
+
+        <div id="achievementsList" class="achievements-grid"></div>
+    </div>
+
+    <script src="js/data.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        function initAchievements() {
+            const user = UserSystem.getCurrentUser();
+            if (!user) {
+                document.getElementById('notLoggedIn').style.display = 'block';
+                return;
+            }
+
+            const unlockedAch = user.achievements || [];
+            const allAch = ProgressTracker.ACHIEVEMENTS;
+
+            document.getElementById('unlockedCount').textContent = unlockedAch.length;
+            document.getElementById('totalCount').textContent = allAch.length;
+            document.getElementById('xpCount').textContent = unlockedAch.reduce((sum, a) => sum + (a.xp || 0), 0);
+
+            const listEl = document.getElementById('achievementsList');
+            listEl.innerHTML = allAch.map(ach => {
+                const unlocked = unlockedAch.find(a => a.id === ach.id);
+                return `
+                    <div class="achievement-card ${unlocked ? 'unlocked' : 'locked'}">
+                        <div class="achievement-icon">${unlocked ? ach.icon : '🔒'}</div>
+                        <h4>${ach.name}</h4>
+                        <p>${ach.description}</p>
+                        <div class="achievement-xp">+${ach.xp} XP</div>
+                        ${unlocked ? `<div class="unlock-date">🎉 已解锁</div>` : `<div class="unlock-date">未解锁</div>`}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        initAchievements();
+    </script>
+</body>

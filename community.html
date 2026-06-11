@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>社区交流 - 生物化学学习平台</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .community-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .post-card {
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 18px;
+            padding: 1.8rem;
+            transition: all 0.2s;
+            margin-bottom: 1.2rem;
+        }
+        .post-card:hover {
+            border-color: #6366f1;
+        }
+        .post-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        .avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #6366f1, #a855f7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+        .post-meta .author {
+            font-weight: 600;
+            color: #f1f5f9;
+        }
+        .post-meta .time {
+            color: #94a3b8;
+            font-size: 0.85rem;
+        }
+        .post-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 0.8rem;
+            color: #f1f5f9;
+        }
+        .post-content {
+            color: #cbd5e1;
+            line-height: 1.8;
+            margin-bottom: 1rem;
+            white-space: pre-wrap;
+        }
+        .post-tags {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+        .tag {
+            padding: 5px 12px;
+            background: rgba(99, 102, 241, 0.12);
+            color: #a855f7;
+            border-radius: 20px;
+            font-size: 0.82rem;
+            font-weight: 500;
+        }
+        .post-actions {
+            display: flex;
+            gap: 1.5rem;
+            color: #94a3b8;
+            font-size: 0.9rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        .action-btn {
+            cursor: pointer;
+            padding: 6px 10px;
+            border-radius: 6px;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            user-select: none;
+        }
+        .action-btn:hover {
+            background: rgba(255, 255, 255, 0.04);
+            color: #f1f5f9;
+        }
+        .action-btn.liked {
+            color: #ef4444;
+        }
+        .write-post-box {
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 18px;
+            padding: 1.8rem;
+            margin-bottom: 2rem;
+        }
+        .input-field {
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 14px;
+            color: #f1f5f9;
+            font-size: 1rem;
+            width: 100%;
+            font-family: inherit;
+        }
+        .input-field:focus {
+            outline: none;
+            border-color: #6366f1;
+        }
+        textarea.input-field {
+            min-height: 100px;
+            resize: vertical;
+            line-height: 1.7;
+        }
+        .comments-section {
+            margin-top: 1.2rem;
+            padding-top: 1.2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            display: none;
+        }
+        .comments-section.show {
+            display: block;
+        }
+        .comment {
+            background: rgba(15, 23, 42, 0.5);
+            padding: 12px 15px;
+            border-radius: 12px;
+            margin-bottom: 8px;
+        }
+        .comment-header {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 4px;
+            align-items: center;
+        }
+        .comment-header .c-author {
+            color: #a855f7;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        .comment-header .c-time {
+            color: #64748b;
+            font-size: 0.8rem;
+        }
+        .comment-content {
+            color: #cbd5e1;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+        .comment-form {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        .comment-form input {
+            flex: 1;
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+            padding: 10px 12px;
+            color: #f1f5f9;
+            font-size: 0.9rem;
+            font-family: inherit;
+        }
+        .empty-state {
+            text-align: center;
+            padding: 3rem 2rem;
+            color: #94a3b8;
+        }
+        .empty-state .icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        .tab-bar {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 1.5rem;
+        }
+        .tab-btn {
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: #94a3b8;
+            padding: 8px 16px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+        .tab-btn.active {
+            background: #6366f1;
+            color: white;
+            border-color: #6366f1;
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div style="max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; height: 70px;">
+            <div class="logo" onclick="location.href='index.html'">
+                <div class="logo-icon">🧬</div>
+                <div style="font-weight: 700; font-size: 1.2rem;">生化学习平台</div>
+            </div>
+            <div class="nav-links" style="list-style: none; display: flex; gap: 8px;">
+                <a href="index.html">首页</a>
+                <a href="chapters.html">学习中心</a>
+                <a href="quiz.html">练习测试</a>
+                <a href="community.html">社区交流</a>
+                <a href="achievements.html">成就系统</a>
+            </div>
+            <div class="nav-user"></div>
+        </div>
+    </nav>
+
+    <div class="container" style="padding: 2rem;">
+        <div style="text-align: center; margin-bottom: 2rem;">
+            <h1 style="font-size: 2.2rem; margin-bottom: 0.8rem;">💬 社区交流</h1>
+            <p style="color: #94a3b8; font-size: 1.05rem;">分享学习心得、提问讨论、与同学们共同进步</p>
+        </div>
+
+        <div class="community-container">
+            <!-- 发帖区 -->
+            <div class="write-post-box" id="writePostBox">
+                <h3 style="margin-bottom: 1rem; font-size: 1.15rem;">✍️ 发布新话题</h3>
+                <input type="text" id="postTitle" class="input-field" placeholder="标题..." style="margin-bottom: 10px;">
+                <textarea id="postContent" class="input-field" placeholder="分享你的学习心得、疑问或讨论话题..."></textarea>
+                <input type="text" id="postTags" class="input-field" placeholder="标签（用逗号分隔，如：蛋白质, 酶, 学习方法）" style="margin-top: 10px;">
+                <div style="margin-top: 1rem; text-align: right;">
+                    <button class="btn btn-primary" onclick="publishPost()">📤 发布</button>
+                </div>
+            </div>
+
+            <!-- 筛选栏 -->
+            <div class="tab-bar">
+                <button class="tab-btn active" onclick="sortPosts('latest', this)">🕐 最新</button>
+                <button class="tab-btn" onclick="sortPosts('hot', this)">🔥 最热</button>
+                <button class="tab-btn" onclick="sortPosts('mine', this)">👤 我的</button>
+            </div>
+
+            <!-- 帖子列表 -->
+            <div id="postsList"></div>
+        </div>
+    </div>
+
+    <script src="js/data.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        let currentSort = 'latest';
+
+        // 初始化示例帖子（仅在第一次打开时）
+        function seedPosts() {
+            const existing = CommunitySystem.getPosts();
+            if (existing.length === 0) {
+                // 绕过 CommunitySystem.addPost 直接写入，因为 addPost 需要当前用户
+                const samples = [
+                    {
+                        id: 'post_1_sample',
+                        author: '生化学霸',
+                        title: '关于蛋白质变性的理解与实际应用',
+                        content: '刚学完蛋白质的结构与功能，对蛋白质的变性特别感兴趣。\n\n蛋白质的变性主要发生在二级、三级、四级结构的破坏，而肽键并没有断裂。日常生活中最常见的例子就是煮鸡蛋，蛋清从透明变白色就是典型的变性现象。\n\n大家有什么有趣的发现吗？',
+                        tags: ['蛋白质', '学习分享'],
+                        likes: ['同学A', '同学B', '同学C', '小李'],
+                        comments: [
+                            { id: 'c1', author: '小李', content: '说得很好，我补充一点：变性后的蛋白质更容易被蛋白酶水解，所以熟食更容易消化。', createdAt: Date.now() - 3600000 }
+                        ],
+                        createdAt: Date.now() - 86400000
+                    },
+                    {
+                        id: 'post_2_sample',
+                        author: '生化小白',
+                        title: '如何高效记忆氨基酸的分类？',
+                        content: '求助各位大佬！氨基酸的种类太多了，20种加上各种分类，实在记不住。有什么好的记忆方法吗？\n\n目前我自己总结了：\n- 非极性脂肪族：甘丙缬亮异，甲硫脯\n- 极性不带电：丝苏半酪，天胺谷胺\n- 芳香族：苯丙酪色\n\n还有什么更巧妙的记忆方法吗？',
+                        tags: ['氨基酸', '求助', '学习方法'],
+                        likes: ['老王', '代谢达人'],
+                        comments: [
+                            { id: 'c2', author: '老王', content: '可以用顺口溜！"甘丙缬亮异，甲硫脯氨酸"，多念几遍就记住了。', createdAt: Date.now() - 7200000 },
+                            { id: 'c3', author: '同学A', content: '建议结合化学结构式来记忆，这样更容易理解为什么这样分类。', createdAt: Date.now() - 3600000 }
+                        ],
+                        createdAt: Date.now() - 172800000
+                    },
+                    {
+                        id: 'post_3_sample',
+                        author: '代谢达人',
+                        title: '三羧酸循环记忆心得分享',
+                        content: '三羧酸循环是糖代谢的重点，也是难点！分享一下我的记忆技巧：\n\n1. 记住关键产物：每次循环产生3个NADH、1个FADH2、1个GTP\n2. 关键酶：柠檬酸合酶、异柠檬酸脱氢酶、α-酮戊二酸脱氢酶\n3. 口诀："宁异酮琥延苹草"——柠檬酸、异柠檬酸、α-酮戊二酸、琥珀酰CoA、琥珀酸、延胡索酸、苹果酸、草酰乙酸\n\n希望对大家有帮助！',
+                        tags: ['糖代谢', '三羧酸循环', '学习方法'],
+                        likes: ['生化学霸', '小李', '老王', '生化小白', '同学A', '同学B'],
+                        comments: [],
+                        createdAt: Date.now() - 259200000
+                    }
+                ];
+                // 使用 Storage API 直接保存
+                if (typeof Storage !== 'undefined' && Storage.set) {
+                    Storage.set('posts', samples);
+                }
+            }
+        }
+
+        function initCommunity() {
+            const user = UserSystem.getCurrentUser();
+            if (!user) {
+                document.getElementById('writePostBox').style.display = 'none';
+                document.getElementById('postsList').innerHTML = `
+                    <div class="empty-state">
+                        <div class="icon">🔐</div>
+                        <h2>请先登录参与社区交流</h2>
+                        <p style="margin-top: 1rem;">登录后可发布话题、评论和点赞</p>
+                        <div style="margin-top: 2rem;">
+                            <button class="btn btn-primary btn-large" onclick="location.href='login.html'">登录</button>
+                            <button class="btn btn-secondary btn-large" onclick="location.href='register.html'">注册</button>
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+
+            seedPosts();
+            renderPosts();
+        }
+
+        function publishPost() {
+            const title = document.getElementById('postTitle').value.trim();
+            const content = document.getElementById('postContent').value.trim();
+            const tagsStr = document.getElementById('postTags').value.trim();
+
+            if (!title || !content) {
+                showToast('请填写标题和内容', 'warning');
+                return;
+            }
+
+            const tags = tagsStr ? tagsStr.split(/[,，]/).map(t => t.trim()).filter(t => t) : [];
+            const result = CommunitySystem.addPost(title, content, tags);
+
+            if (result.success) {
+                document.getElementById('postTitle').value = '';
+                document.getElementById('postContent').value = '';
+                document.getElementById('postTags').value = '';
+                currentSort = 'latest';
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.tab-btn')[0].classList.add('active');
+                renderPosts();
+                showToast('发布成功！', 'success');
+            } else {
+                showToast(result.message || '发布失败', 'warning');
+            }
+        }
+
+        function sortPosts(sort, btn) {
+            currentSort = sort;
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            renderPosts();
+        }
+
+        function renderPosts() {
+            const user = UserSystem.getCurrentUser();
+            let posts = CommunitySystem.getPosts();
+
+            if (!posts || posts.length === 0) {
+                document.getElementById('postsList').innerHTML = `
+                    <div class="empty-state">
+                        <div class="icon">📭</div>
+                        <h3>还没有话题</h3>
+                        <p>成为第一个发帖的人吧！</p>
+                    </div>
+                `;
+                return;
+            }
+
+            if (currentSort === 'hot') {
+                posts = [...posts].sort((a, b) => (b.likes?.length || 0) - (a.likes?.length || 0));
+            } else if (currentSort === 'mine') {
+                posts = posts.filter(p => p.author === user.username);
+            } else {
+                posts = [...posts].sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+            }
+
+            const listEl = document.getElementById('postsList');
+            listEl.innerHTML = posts.map(p => {
+                const liked = user && p.likes && p.likes.includes(user.username);
+                const likeCount = p.likes ? p.likes.length : 0;
+                const commentCount = p.comments ? p.comments.length : 0;
+                return `
+                    <div class="post-card" id="card-${p.id}">
+                        <div class="post-header">
+                            <div class="avatar">${escapeHtml((p.author || '?').charAt(0).toUpperCase())}</div>
+                            <div class="post-meta">
+                                <div class="author">${escapeHtml(p.author)}</div>
+                                <div class="time">${formatTime(p.createdAt)}</div>
+                            </div>
+                        </div>
+                        <div class="post-title">${escapeHtml(p.title)}</div>
+                        <div class="post-content">${escapeHtml(p.content)}</div>
+                        ${p.tags && p.tags.length > 0 ? `<div class="post-tags">${p.tags.map(t => `<span class="tag"># ${escapeHtml(t)}</span>`).join('')}</div>` : ''}
+                        <div class="post-actions">
+                            <div class="action-btn ${liked ? 'liked' : ''}" onclick="toggleLike('${p.id}')">
+                                ${liked ? '❤️' : '🤍'} ${likeCount} 赞
+                            </div>
+                            <div class="action-btn" onclick="toggleComments('${p.id}')">
+                                💬 ${commentCount} 评论
+                            </div>
+                        </div>
+                        <div class="comments-section" id="comments-${p.id}">
+                            ${p.comments && p.comments.length > 0 ? p.comments.map(c => `
+                                <div class="comment">
+                                    <div class="comment-header">
+                                        <span class="c-author">${escapeHtml(c.author)}</span>
+                                        <span class="c-time">${formatTime(c.createdAt)}</span>
+                                    </div>
+                                    <div class="comment-content">${escapeHtml(c.content)}</div>
+                                </div>
+                            `).join('') : '<div style="color: #64748b; font-size: 0.85rem; margin-bottom: 10px;">暂无评论，来发表你的看法吧</div>'}
+                            <div class="comment-form">
+                                <input type="text" id="comment-input-${p.id}" placeholder="写下你的评论..." onkeypress="if(event.key==='Enter')addComment('${p.id}')">
+                                <button class="btn btn-primary" style="padding: 10px 20px;" onclick="addComment('${p.id}')">发送</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function toggleLike(postId) {
+            const result = CommunitySystem.toggleLike(postId);
+            if (result && result.success) {
+                renderPosts();
+                // 保持评论区展开
+                const el = document.getElementById(`comments-${postId}`);
+                if (el) el.classList.add('show');
+            } else {
+                showToast('请先登录', 'warning');
+            }
+        }
+
+        function toggleComments(postId) {
+            const el = document.getElementById(`comments-${postId}`);
+            if (el) el.classList.toggle('show');
+        }
+
+        function addComment(postId) {
+            const input = document.getElementById(`comment-input-${postId}`);
+            const content = input.value.trim();
+            if (!content) return;
+            const result = CommunitySystem.addComment(postId, content);
+            if (result && result.success) {
+                renderPosts();
+                const el = document.getElementById(`comments-${postId}`);
+                if (el) el.classList.add('show');
+            } else {
+                showToast('请先登录', 'warning');
+            }
+        }
+
+        function formatTime(t) {
+            if (!t) return '';
+            const diff = Date.now() - t;
+            const mins = Math.floor(diff / 60000);
+            const hours = Math.floor(diff / 3600000);
+            const days = Math.floor(diff / 86400000);
+            if (mins < 1) return '刚刚';
+            if (mins < 60) return `${mins} 分钟前`;
+            if (hours < 24) return `${hours} 小时前`;
+            if (days < 30) return `${days} 天前`;
+            return new Date(t).toLocaleDateString();
+        }
+
+        function escapeHtml(text) {
+            if (text === null || text === undefined) return '';
+            const div = document.createElement('div');
+            div.textContent = String(text);
+            return div.innerHTML;
+        }
+
+        initCommunity();
+    </script>
+</body>

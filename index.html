@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>生物化学学习平台</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo" onclick="location.href='index.html'">
+                <div class="logo-icon">生</div>
+                <span>生物化学学习平台</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html" class="active">首页</a></li>
+                <li><a href="chapters.html">学习中心</a></li>
+                <li><a href="quiz.html">练习测试</a></li>
+                <li><a href="dashboard.html">学习进度</a></li>
+                <li><a href="community.html">社区交流</a></li>
+            </ul>
+            <div class="nav-user" id="navUser"></div>
+        </div>
+    </nav>
+
+    <!-- 首页英雄区 -->
+    <section class="hero-section">
+        <div class="hero-content">
+            <h1>生物化学在线学习平台</h1>
+            <p class="subtitle">基于《生物化学》第四版教材与中科大考研真题构建，涵盖蛋白质、核酸、酶、糖代谢、脂类代谢、氨基酸代谢、核苷酸代谢、生物氧化等核心知识点，配套互动练习与个性化学习路径。</p>
+            <div class="hero-buttons">
+                <button class="btn btn-primary btn-large" onclick="location.href='chapters.html'">开始学习</button>
+                <button class="btn btn-secondary btn-large" onclick="location.href='quiz.html'">练习测试</button>
+            </div>
+            <div class="hero-stats">
+                <div class="stat-card">
+                    <div class="num">8</div>
+                    <div class="label">章节</div>
+                </div>
+                <div class="stat-card">
+                    <div class="num">24+</div>
+                    <div class="label">知识点</div>
+                </div>
+                <div class="stat-card">
+                    <div class="num">550+</div>
+                    <div class="label">题目</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 功能介绍 -->
+    <section class="features-section">
+        <h2 class="section-title">核心功能</h2>
+        <div class="features-grid">
+            <div class="feature-card" onclick="location.href='chapters.html'">
+                <div class="feature-icon">📚</div>
+                <h3>知识点学习</h3>
+                <p>系统化课程章节，详细讲解生物化学核心概念与原理</p>
+            </div>
+            <div class="feature-card" onclick="location.href='quiz.html'">
+                <div class="feature-icon">✍️</div>
+                <h3>互动练习</h3>
+                <p>名词解释、填空题、记忆训练、论述题等多种题型</p>
+            </div>
+            <div class="feature-card" onclick="location.href='dashboard.html'">
+                <div class="feature-icon">📊</div>
+                <h3>进度追踪</h3>
+                <p>学习进度可视化，掌握个人学习状态与薄弱环节</p>
+            </div>
+            <div class="feature-card" onclick="location.href='achievements.html'">
+                <div class="feature-icon">🏆</div>
+                <h3>成就激励</h3>
+                <p>学习成就系统，激励持续学习与知识积累</p>
+            </div>
+            <div class="feature-card" onclick="location.href='community.html'">
+                <div class="feature-icon">💬</div>
+                <h3>社区交流</h3>
+                <p>学习讨论社区，分享心得与答疑解惑</p>
+            </div>
+            <div class="feature-card" onclick="location.href='register.html'">
+                <div class="feature-icon">👤</div>
+                <h3>个人账户</h3>
+                <p>注册登录保存学习数据，随时随地继续学习</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 章节预览 -->
+    <section class="chapters-preview">
+        <h2 class="section-title">课程章节</h2>
+        <div class="chapters-grid">
+            <div class="chapter-preview" onclick="location.href='learning.html?chapterId=chapter-1'">
+                <div class="chapter-icon">🧬</div>
+                <h4>第一章 蛋白质的结构与功能</h4>
+                <p>氨基酸、肽键、蛋白质一级至四级结构</p>
+            </div>
+            <div class="chapter-preview" onclick="location.href='learning.html?chapterId=chapter-2'">
+                <div class="chapter-icon">🔗</div>
+                <h4>第二章 核酸的结构与功能</h4>
+                <p>核苷酸、DNA双螺旋、RNA结构与功能</p>
+            </div>
+            <div class="chapter-preview" onclick="location.href='learning.html?chapterId=chapter-3'">
+                <div class="chapter-icon">⚡</div>
+                <h4>第三章 酶</h4>
+                <p>酶的结构、催化机制、动力学、抑制剂</p>
+            </div>
+            <div class="chapter-preview" onclick="location.href='learning.html?chapterId=chapter-4'">
+                <div class="chapter-icon">🍬</div>
+                <h4>第四章 糖代谢</h4>
+                <p>糖酵解、三羧酸循环、糖原代谢、糖异生</p>
+            </div>
+            <div class="chapter-preview" onclick="location.href='learning.html?chapterId=chapter-5'">
+                <div class="chapter-icon">🧈</div>
+                <h4>第五章 脂类代谢</h4>
+                <p>脂肪动员、脂肪酸β-氧化、酮体、胆固醇</p>
+            </div>
+            <div class="chapter-preview" onclick="location.href='learning.html?chapterId=chapter-6'">
+                <div class="chapter-icon">🧪</div>
+                <h4>第六章 氨基酸代谢</h4>
+                <p>脱氨基作用、尿素循环、一碳单位代谢</p>
+            </div>
+            <div class="chapter-preview" onclick="location.href='learning.html?chapterId=chapter-7'">
+                <div class="chapter-icon">🧬</div>
+                <h4>第七章 核苷酸代谢与代谢调节</h4>
+                <p>嘌呤嘧啶代谢、抗代谢物、代谢调节</p>
+            </div>
+            <div class="chapter-preview" onclick="location.href='learning.html?chapterId=chapter-8'">
+                <div class="chapter-icon">⚡</div>
+                <h4>第八章 生物氧化与能量代谢</h4>
+                <p>呼吸链、氧化磷酸化、ATP合酶</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer style="text-align: center; padding: 2rem; color: var(--text-muted); font-size: 0.85rem; border-top: 1px solid var(--border);">
+        <p>生物化学学习平台 · 基于《生物化学》第四版教材与中科大考研真题</p>
+    </footer>
+
+    <script src="js/data.js"></script>
+    <script src="js/app.js"></script>
+    <!-- 导航栏用户状态由 js/app.js 中的 renderUserNav() 统一处理 -->
+</body>
+</html>
